@@ -13,6 +13,7 @@ function framestepBackwards()
 end
 
 
+
 -- Makes use of myo.getArm() to swap wave out and wave in when the armband is being worn on
 -- the left arm. This allows us to treat wave out as wave right and wave in as wave
 -- left for consistent direction. The function has no effect on other poses.
@@ -37,7 +38,7 @@ function extendUnlock()
 end
 
 -- All timeouts in milliseconds
-UNLOCKED_TIMEOUT = 2200               -- Time since last activity before we lock
+UNLOCKED_TIMEOUT = 4000               -- Time since last activity before we lock
 
 function onPeriodic()
     local now = myo.getTimeMilliseconds()
@@ -81,7 +82,6 @@ function onPoseEdge(pose, edge)
                 framestepBackwards()
 
             elseif pose == "fist" then
-            	myo.debug("fist")
             	pauseOrPlay()
 
             elseif pose == "waveOut" then
@@ -96,7 +96,7 @@ function onPoseEdge(pose, edge)
 end
 
 -- All timeouts in milliseconds
-
+--[[
 -- Delay when holding wave left/right before switching to shuttle behaviour
 SHUTTLE_CONTINUOUS_TIMEOUT = 600
 
@@ -125,7 +125,7 @@ function onPeriodic()
 
     -- ...
 end
-
+--]]
 function onForegroundWindowChange(app, title)
     -- Here we decide if we want to control the new active app.
 

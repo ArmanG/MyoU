@@ -1,7 +1,7 @@
 scriptId = 'com.youtube'
 
 function pauseOrPlay()
-    myo.keyboard("k", "press")
+    myo.keyboard("space", "press")
 end
 
 function framestepForwards()
@@ -69,7 +69,7 @@ function onPoseEdge(pose, edge)
             extendUnlock()
         end
     end
-    if pose == "waveIn" or pose == "waveOut" then
+    if pose == "waveIn" or pose == "waveOut" or pose == "fist" then
         local now = myo.getTimeMilliseconds()
 
         if unlocked and edge == "on" then
@@ -79,12 +79,13 @@ function onPoseEdge(pose, edge)
             -- Determine direction based on the pose.
             if pose == "waveIn" then
                 framestepBackwards()
-            
-            elseif pose == "waveOut" then
-            	framestepForwards()
 
             elseif pose == "fist" then
+            	myo.debug("fist")
             	pauseOrPlay()
+
+            elseif pose == "waveOut" then
+            	framestepForwards()
             end
 
             -- Initial burst and vibrate
@@ -95,7 +96,7 @@ function onPoseEdge(pose, edge)
 end
 
 -- All timeouts in milliseconds
-
+--[[
 -- Delay when holding wave left/right before switching to shuttle behaviour
 SHUTTLE_CONTINUOUS_TIMEOUT = 600
 
@@ -124,7 +125,7 @@ function onPeriodic()
 
     -- ...
 end
-
+--]]
 function onForegroundWindowChange(app, title)
     -- Here we decide if we want to control the new active app.
 

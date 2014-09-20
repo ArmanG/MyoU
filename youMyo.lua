@@ -96,7 +96,7 @@ function onPoseEdge(pose, edge)
 end
 
 -- All timeouts in milliseconds
---[[
+
 -- Delay when holding wave left/right before switching to shuttle behaviour
 SHUTTLE_CONTINUOUS_TIMEOUT = 600
 
@@ -125,7 +125,7 @@ function onPeriodic()
 
     -- ...
 end
---]]
+
 function onForegroundWindowChange(app, title)
     -- Here we decide if we want to control the new active app.
 

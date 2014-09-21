@@ -12,7 +12,21 @@ function framestepBackwards()
 	myo.keyboard("left_arrow", "press")
 end
 
+function scrollUp()
+    myo.keyboard("up_arrow","press")
+end
 
+function scrollDown()
+    myo.keyboard("down_arrow","press")
+end
+
+function resetFist()
+    fistMade = false
+    referenceRoll = myo.getRoll()
+    currentRoll = referenceRoll
+  --  myo.keyboard("up_arrow","up")
+  --  myo.keyboard("down_arrow","up")
+end
 
 -- Makes use of myo.getArm() to swap wave out and wave in when the armband is being worn on
 -- the left arm. This allows us to treat wave out as wave right and wave in as wave
@@ -53,6 +67,23 @@ function onPeriodic()
             unlocked = false
         end
     end
+
+    currentRoll = myo.getRoll()
+    if myo.getXDirection() == "towardElbow" then
+        currentRoll = currentRoll * -1
+        extendUnlock()
+    end
+
+    if unlocked and fistMade then -- Moves page when fist is held and Myo is rotated
+        extendUnlock()
+        subtractive = currentRoll - referenceRoll
+        if subtractive > 0.2  then
+            scrollUp()
+        elseif subtractive < -0.2 then
+            scrollDown() 
+        end
+    end
+
 end
 
 function onPoseEdge(pose, edge)
@@ -81,11 +112,22 @@ function onPoseEdge(pose, edge)
             if pose == "waveIn" then
                 framestepBackwards()
 
-            elseif pose == "fist" then
+            elseif pose == "fist" then -- Sets up fist movement
             	pauseOrPlay()
+                if not fistMade then
+                    referenceRoll = myo.getRoll()
+                    fistMade = true
+                    if myo.getXDirection() == "towardElbow" then -- Adjusts for Myo orientation
+                        referenceRoll = referenceRoll * -1
+                    end
+                end
 
             elseif pose == "waveOut" then
             	framestepForwards()
+            end
+
+            if pose ~= "fist" then -- Reset call
+                resetFist()
             end
 
             -- Initial burst and vibrate

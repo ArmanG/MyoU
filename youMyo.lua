@@ -95,37 +95,6 @@ function onPoseEdge(pose, edge)
     end
 end
 
--- All timeouts in milliseconds
---[[
--- Delay when holding wave left/right before switching to shuttle behaviour
-SHUTTLE_CONTINUOUS_TIMEOUT = 600
-
--- How often to trigger shuttle behaviour
-SHUTTLE_CONTINUOUS_PERIOD = 300
-
-function onPeriodic()
-    local now = myo.getTimeMilliseconds()
-
-    -- Shuttle behaviour
-    if shuttleTimeout then
-        extendUnlock()
-
-        -- If we haven't done a shuttle burst since the timeout, do one now
-        if (now - shuttleSince) > shuttleTimeout then
-            --  Perform a shuttle burst
-            shuttleBurst()
-
-            -- Update the timeout. (The first time it will be the longer delay.)
-            shuttleTimeout = SHUTTLE_CONTINUOUS_PERIOD
-
-            -- Update when we did the last shuttle burst
-            shuttleSince = now
-        end
-    end
-
-    -- ...
-end
---]]
 function onForegroundWindowChange(app, title)
     -- Here we decide if we want to control the new active app.
 

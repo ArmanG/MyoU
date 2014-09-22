@@ -9,9 +9,5 @@ The handy tools you need to control your YouTube-- hands free!
 * Add script to Script Manager under the Myo Connect Menu.
 * Go to YouTube and enjoy!
 
-Demo:
-
-[[youtube-{O2aTbdBDF40}-{688}x{387}]]
-
-
+[Watch a demo!](https://www.youtube.com/watch?v=O2aTbdBDF40)
 

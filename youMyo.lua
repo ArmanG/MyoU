@@ -1,5 +1,8 @@
 scriptId = 'com.youtube'
 
+-- All timeouts in milliseconds
+UNLOCKED_TIMEOUT = 2000               -- Time since last activity before we lock
+
 function pauseOrPlay()
     myo.keyboard("space", "press")
 end
@@ -45,14 +48,13 @@ end
 function unlock()
     unlocked = true
     extendUnlock()
+	--myo.debug("unlock")
 end
 
 function extendUnlock()
     unlockedSince = myo.getTimeMilliseconds()
 end
 
--- All timeouts in milliseconds
-UNLOCKED_TIMEOUT = 4000               -- Time since last activity before we lock
 
 function onPeriodic()
     local now = myo.getTimeMilliseconds()
@@ -63,13 +65,15 @@ function onPeriodic()
     if unlocked then
         -- If we've been unlocked longer than the timeout period, lock.
         -- Activity will update unlockedSince, see extendUnlock() above.
+		-- myo.debug(now - unlockedSince)
         if now - unlockedSince > UNLOCKED_TIMEOUT then
             unlocked = false
+			myo.vibrate("short")
         end
     end
 
     currentRoll = myo.getRoll()
-    if myo.getXDirection() == "towardElbow" then
+    if myo.getXDirection() == "towardElbow" and fistMade then
         currentRoll = currentRoll * -1
         extendUnlock()
     end
@@ -141,13 +145,22 @@ function onForegroundWindowChange(app, title)
     -- Here we decide if we want to control the new active app.
 
     local wantActive = false
-
-    if app == "com.google.Chrome" then
-    	wantActive = true
-		activeApp = "Chrome"
+	--myo.debug("App change ,title:")
+	--myo.debug(title)
+	
+	if platform == "MacOS" then --Chrome on Mac OS
+		if app == "com.google.Chrome" then
+			activeApp = "Chrome"
+			wantActive = true
+		end
+	elseif platform == "Windows" then --Chrome on Windows
+		wantActive = string.match(title, " *%- YouTube %- Google Chrome$")
+		if wantActive then
+			activeApp = "Chrome"
+			--myo.debug("Active")
+		end
 	end
-
-    
+  
     return wantActive
 end
 

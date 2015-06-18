@@ -1,6 +1,6 @@
 MyoU
 ====
-The handy tools you need to control your YouTube-- hands free!
+The handy tools you need to control YouTube-- hands free!
 --------------------------------------------------------------------
 
 ### Instructions:
